@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VaultKey</title>
+  <link rel="stylesheet" href="popup.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+</head>
+<body>
+
+  <!-- LOCK SCREEN -->
+  <div id="lock-screen" class="screen active">
+    <div class="lock-bg"></div>
+    <div class="lock-content">
+      <div class="logo-wrap">
+        <div class="logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <rect x="8" y="16" width="20" height="15" rx="3" fill="white" fill-opacity="0.95"/>
+            <path d="M12 16v-5a6 6 0 0 1 12 0v5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="18" cy="23" r="2.5" fill="#7c3aed"/>
+          </svg>
+        </div>
+        <span class="logo-text">VaultKey</span>
+      </div>
+      <p class="lock-sub">Your secrets, locked tight.</p>
+      <div class="input-group">
+        <input type="password" id="master-password" placeholder="Master password" autocomplete="off"/>
+        <button class="btn-unlock" id="unlock-btn">Unlock →</button>
+      </div>
+      <p class="lock-hint" id="lock-hint"></p>
+      <button class="btn-ghost" id="setup-btn">First time? Set master password</button>
+    </div>
+  </div>
+
+  <!-- SETUP SCREEN -->
+  <div id="setup-screen" class="screen">
+    <div class="lock-bg"></div>
+    <div class="lock-content">
+      <div class="logo-wrap">
+        <div class="logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none">
+            <rect x="8" y="16" width="20" height="15" rx="3" fill="white" fill-opacity="0.95"/>
+            <path d="M12 16v-5a6 6 0 0 1 12 0v5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="18" cy="23" r="2.5" fill="#7c3aed"/>
+          </svg>
+        </div>
+        <span class="logo-text">VaultKey</span>
+      </div>
+      <p class="lock-sub">Create your master password</p>
+      <div class="input-group" style="gap:10px">
+        <input type="password" id="new-pass" placeholder="New master password" autocomplete="off"/>
+        <input type="password" id="confirm-pass" placeholder="Confirm password" autocomplete="off"/>
+        <button class="btn-unlock" id="save-master-btn">Create Vault →</button>
+      </div>
+      <p class="lock-hint" id="setup-hint"></p>
+      <button class="btn-ghost" id="back-to-lock-btn">← Back to login</button>
+    </div>
+  </div>
+
+  <!-- MAIN VAULT SCREEN -->
+  <div id="vault-screen" class="screen">
+    <header class="vault-header">
+      <div class="header-left">
+        <div class="logo-icon small">
+          <svg width="22" height="22" viewBox="0 0 36 36" fill="none">
+            <rect x="8" y="16" width="20" height="15" rx="3" fill="white" fill-opacity="0.95"/>
+            <path d="M12 16v-5a6 6 0 0 1 12 0v5" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+            <circle cx="18" cy="23" r="2.5" fill="#7c3aed"/>
+          </svg>
+        </div>
+        <span class="header-title">VaultKey</span>
+      </div>
+      <div class="header-actions">
+        <button class="icon-btn" id="add-btn" title="Add new entry">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="lock-btn" title="Lock vault">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- CATEGORY TABS -->
+    <div class="tab-row">
+      <button class="tab active" data-cat="all">All</button>
+      <button class="tab" data-cat="password">Passwords</button>
+      <button class="tab" data-cat="card">Cards</button>
+      <button class="tab" data-cat="note">Notes</button>
+    </div>
+
+    <!-- SEARCH -->
+    <div class="search-wrap">
+      <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="text" id="search-input" placeholder="Search vault…"/>
+    </div>
+
+    <!-- ENTRIES LIST -->
+    <div class="entries-list" id="entries-list">
+      <div class="empty-state" id="empty-state">
+        <div class="empty-icon">🔐</div>
+        <p>No entries yet.<br/>Tap <strong>+</strong> to add one.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / EDIT MODAL -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">New Entry</h3>
+        <button class="icon-btn modal-close" id="modal-close-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-type-row">
+        <button class="type-btn active" data-type="password">🔑 Password</button>
+        <button class="type-btn" data-type="card">💳 Card</button>
+        <button class="type-btn" data-type="note">📝 Note</button>
+      </div>
+
+      <!-- PASSWORD FIELDS -->
+      <div id="fields-password" class="field-group">
+        <div class="field"><label>Site / App</label><input type="text" id="p-site" placeholder="e.g. github.com"/></div>
+        <div class="field"><label>Username / Email</label><input type="text" id="p-user" placeholder="your@email.com"/></div>
+        <div class="field">
+          <label>Password</label>
+          <div class="pass-row">
+            <input type="password" id="p-pass" placeholder="••••••••••"/>
+            <button class="pass-toggle" id="toggle-pass">👁</button>
+            <button class="pass-gen" id="gen-pass" title="Generate password">⚡</button>
+          </div>
+          <div class="strength-bar"><div id="strength-fill"></div></div>
+          <span id="strength-label" class="strength-label"></span>
+        </div>
+        <div class="field"><label>URL (optional)</label><input type="text" id="p-url" placeholder="https://…"/></div>
+      </div>
+
+      <!-- CARD FIELDS -->
+      <div id="fields-card" class="field-group hidden">
+        <div class="field"><label>Card Name / Bank</label><input type="text" id="c-name" placeholder="e.g. HDFC Debit"/></div>
+        <div class="field"><label>Card Number</label><input type="text" id="c-num" placeholder="•••• •••• •••• ••••" maxlength="19"/></div>
+        <div class="field row-fields">
+          <div><label>Expiry</label><input type="text" id="c-exp" placeholder="MM/YY" maxlength="5"/></div>
+          <div><label>CVV</label><input type="password" id="c-cvv" placeholder="•••" maxlength="4"/></div>
+        </div>
+        <div class="field"><label>Cardholder Name</label><input type="text" id="c-holder" placeholder="Full name"/></div>
+      </div>
+
+      <!-- NOTE FIELDS -->
+      <div id="fields-note" class="field-group hidden">
+        <div class="field"><label>Title</label><input type="text" id="n-title" placeholder="e.g. WiFi Password"/></div>
+        <div class="field"><label>Secure Note</label><textarea id="n-body" placeholder="Write your secret note…" rows="5"></textarea></div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-delete hidden" id="delete-entry-btn">Delete</button>
+        <button class="btn-save" id="save-entry-btn">Save Entry</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DETAIL MODAL -->
+  <div id="detail-overlay" class="modal-overlay hidden">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 id="detail-title">Entry Detail</h3>
+        <button class="icon-btn modal-close" id="detail-close-btn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
+            <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+          </svg>
+        </button>
+      </div>
+      <div id="detail-body" class="detail-body"></div>
+      <div class="modal-footer">
+        <button class="btn-edit" id="edit-entry-btn">Edit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
