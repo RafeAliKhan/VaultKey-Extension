@@ -29,7 +29,7 @@ This project is deployed and publicly accessible.
 ---
 
 <img width="128" height="128" alt="icon128" src="https://github.com/user-attachments/assets/0fd48cef-9d9d-46bc-a09e-b7066fd543da" />
-### VaultKey-Extension
+VaultKey-Extension
 
 ---
 
