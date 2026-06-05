@@ -1,8 +1,23 @@
 # VaultKey-Extension
 ---
-Live :
+## 🚀 Deployment
+
+This project is deployed and publicly accessible.
+
+### Deployment Details
+
+| Property | Details |
+|---------|---------|
+| Platform | Github Pages |
+| Environment | Production |
+| Status | Active |
+| Version | v1.0.1 |
+
+### Deployment Steps
 
 ---
+
+### Preview
 
 <img width="1870" height="520" alt="Screenshot 2026-05-26 223206" src="https://github.com/user-attachments/assets/fa00a32b-bf75-4572-aa41-4a5f42272ba1" />
 
