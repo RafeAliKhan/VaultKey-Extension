@@ -1,5 +1,9 @@
 # VaultKey-Extension
 ---
+
+VaultKey is a privacy-first Chrome extension that stores passwords, payment cards, and secure notes entirely on your device — no cloud, no account, no subscription. Built with pure HTML, CSS, and JavaScript in under 50 KB.
+
+---
 ## 🚀 Deployment
 
 This project is deployed and publicly accessible.
